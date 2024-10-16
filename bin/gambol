@@ -5,13 +5,13 @@ declare (strict_types=1);
 
 namespace Gambol;
 
-const COMPOSER_HOME = trim(shell_exec('composer global config home'));
+$composerHome = trim(shell_exec('composer global config home'));
 
-if (!COMPOSER_HOME) {
+if (!$composerHome) {
     fwrite(STDERR, "Error: unable to determine Composer home directory");
     exit(1);
 }
 
-require COMPOSER_HOME . '/vendor/autoload.php';
+require $composerHome . '/vendor/autoload.php';
 
 Handler::run($argv);
