@@ -3,6 +3,6 @@
 
 namespace Gambol;
 
-require __DIR__ . '/../vendor/autoload.php';
+require getenv('COMPOSER_HOME') . '/vendor/autoload.php';
 
 Handler::run($argv);
