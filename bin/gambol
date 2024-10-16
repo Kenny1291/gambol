@@ -1,8 +1,17 @@
 #!/usr/bin/php
 <?php
 
+declare (strict_types=1);
+
 namespace Gambol;
 
-require getenv('COMPOSER_HOME') . '/vendor/autoload.php';
+const COMPOSER_HOME = trim(shell_exec('composer global config home'));
+
+if (!COMPOSER_HOME) {
+    fwrite(STDERR, "Error: unable to determine Composer home directory");
+    exit(1);
+}
+
+require COMPOSER_HOME . '/vendor/autoload.php';
 
 Handler::run($argv);
