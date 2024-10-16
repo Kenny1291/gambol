@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ubuntu:latest
+    volumes:
+      - .:/gambol # Mounts the current directory (.) on the host to /gambol inside the container.
+    working_dir: /gambol
+    stdin_open: true
+    tty: true
+    command: /bin/bash
