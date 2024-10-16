@@ -6,7 +6,7 @@
             "Gambol\\": "src/"
         },
         "files": [
-            "src/Constants.php"
+            "src/constants.php"
         ]
     },
     "authors": [

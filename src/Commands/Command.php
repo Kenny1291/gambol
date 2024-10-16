@@ -1,5 +1,7 @@
 <?php
 
+declare (strict_types=1);
+
 namespace Gambol\Commands;
 
 use Gambol\Commands\ExitStatus;

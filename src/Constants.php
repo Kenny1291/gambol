@@ -1,5 +1,7 @@
 <?php
 
+declare (strict_types=1);
+
 namespace Gambol;
 
 const CONFIG_FILE_PATH = 'gambol.json';

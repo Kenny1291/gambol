@@ -1,5 +1,7 @@
 <?php
 
+declare (strict_types=1);
+
 namespace Gambol;
 
 use Gambol\Commands\InitCommand\InitCommand;
