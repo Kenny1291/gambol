@@ -4,31 +4,38 @@ declare (strict_types=1);
 
 namespace Gambol;
 
+use Gambol\Commands\ExitStatus;
+use Gambol\Commands\HelpCommand\HelpCommand;
 use Gambol\Commands\InitCommand\InitCommand;
+use Gambol\Commands\VersionCommand\VersionCommand;
 
 final class Handler {
     private static array $commands;
 
     private static function init(): void {
         self::$commands = [
-            InitCommand::class => InitCommand::getName(),
+            InitCommand::getName() => InitCommand::class,
+            HelpCommand::getName() => HelpCommand::class,
+            HelpCommand::getAlias1() => HelpCommand::class,
+            HelpCommand::getAlias2() => HelpCommand::class,
+            VersionCommand::getName() => VersionCommand::class,
+            VersionCommand::getAlias() => VersionCommand::class
         ];
     }
 
     public static function run(array $argv): void {
         self::init();
-
         array_shift($argv);
-        $name = $argv[0];
+        $name = $argv[0] ?? HelpCommand::getName();
         array_shift($argv);
-        if (in_array($name, self::$commands)) {
-            $FQCN = array_search($name, self::$commands);
+        if (array_key_exists($name, self::$commands)) {
+            $FQCN = self::$commands[$name];
+            /** @var Commands\Command $command */
             $command = new $FQCN($argv);
             $command->run();
-
         } else {
-            echo "'" . $name . "' is not a Gambol command. See 'gambol --help'";
-            exit();
+            fwrite(STDERR, "'" . $name . "' is not a gambol command. See 'gambol --help'");
+            exit(ExitStatus::FAILURE->value);
         }
     }
 }

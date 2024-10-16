@@ -4,7 +4,7 @@ declare (strict_types=1);
 
 namespace Gambol\Commands;
 
-enum ExitStatus {
-    case SUCCESS;
-    case FAILURE;
+enum ExitStatus: int {
+    case SUCCESS = 0;
+    case FAILURE = 1;
 }

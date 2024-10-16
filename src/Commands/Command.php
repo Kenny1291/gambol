@@ -1,10 +1,11 @@
-<?php
+<?php 
 
 declare (strict_types=1);
 
 namespace Gambol\Commands;
 
-use Gambol\Commands\ExitStatus;
+use Gambol\Commands\Traits\WithConfig;
+use function Gambol\anyInArray;
 
 abstract class Command {
     protected static string $name;
@@ -15,43 +16,47 @@ abstract class Command {
     protected ?string $argument = null;
     protected ?array $options = null;
 
-    final public function __construct(array $args) {
+    public function __construct(array $args) {
+        if ($args && anyInArray(["--help", "-h", "help"], $args)) {
+            fwrite(STDERR, static::getHelpMessage());
+            exit(ExitStatus::FAILURE->value);
+        }
         if (in_array(WithConfig::class, class_uses($this))) {
             $this->loadConfig();
         }
+        $this->processArgs($args);
+        $this->validateOptions();
+    }
 
+    private function processArgs(array $args): void {
         foreach ($args as $arg) {
-            if (str_starts_with($arg, '--')) {
+            if (str_starts_with($arg, '-')) {
+                if (!static::$_options) {
+                    echo "'gambol " . static::$name . "' does not support flags. See 'gambol " . static::$name . " --help'";
+                    exit(ExitStatus::FAILURE->value);
+                }
                 $this->options[] = $arg;
             } else {
                 if (!$this->argument) {
                     if (!static::$_argument) {
                         echo "'gambol " . static::$name . "' does not support argument. See 'gambol " . static::$name . " --help'";
-                        exit();
+                        exit(ExitStatus::FAILURE->value);
                     }
                     $this->argument = $arg;
                 } else {
                     $message = "More than one argument provided. Gambol commands support only a single argument.";
                     $message .= " See 'gambol '" . static::$name . " --help'";
                     echo $message;
-                    exit();
+                    exit(ExitStatus::FAILURE->value);
                 }
             }
         }
+    }
 
-        if ($this->options && in_array("--help", $this->options)) {
-            echo $this->getHelpMessage();
-            exit();
-        }
-
-        if ($this->options && !static::$_options) {
-            echo "'gambol " . static::$name . "' does not support flags. See 'gambol " . static::$name . " --help'";
-            exit();
-        }
-
+    //TODO: Flags are valid but too many or incompatible
+    private function validateOptions(): void {
         if (static::$_options) {
             $invalidOptions = self::validate($this->options, static::$_options);
-
             if ($invalidOptions) {
                 $message = "The flag";
                 $invalidOptionsLength = count($invalidOptions);
@@ -67,7 +72,7 @@ abstract class Command {
                 $message .= "not valid. See 'gambol " . static::$name . " --help'";
 
                 echo $message;
-                exit();
+                exit(ExitStatus::FAILURE->value);
             }
         }
     }
@@ -82,7 +87,7 @@ abstract class Command {
         return $invalidElements;
     }
 
-    private function getHelpMessage(): string {
+    private static function getHelpMessage(): string {
         $message = static::$description . "\n\n";
         $message .= "USAGE\n  gambol " . static::$name;
         if (static::$_argument) {
@@ -99,11 +104,12 @@ abstract class Command {
 
     abstract protected function execute(): ExitStatus;
 
-    final public function run(): ExitStatus {
-        return $this->execute();
+    final public function run(): never {
+        //TODO: handle CTRL + C
+        exit($this->execute()->value);
     }
 
-    final public static function getName() {
+    final public static function getName(): string {
         return static::$name;
     }
 }

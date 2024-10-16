@@ -4,6 +4,9 @@ declare (strict_types=1);
 
 namespace Gambol\Commands\Traits;
 
+use const Gambol\CONFIG_FILE_PATH;
+use const Gambol\CONFIG_KEYS;
+
 trait WithConfig {
     protected string $serviceName;
     protected string $imageName;
