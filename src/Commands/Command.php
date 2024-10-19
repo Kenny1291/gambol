@@ -4,7 +4,8 @@ declare (strict_types=1);
 
 namespace Gambol\Commands;
 
-use Gambol\Commands\Traits\WithConfig;
+use Gambol\Utils\Configuration\Configuration;
+use Gambol\Utils\Configuration\WithConfig;
 use function Gambol\anyInArray;
 
 abstract class Command {
@@ -21,9 +22,12 @@ abstract class Command {
             fwrite(STDERR, static::getHelpMessage());
             exit(ExitStatus::FAILURE->value);
         }
-        if (in_array(WithConfig::class, class_uses($this))) {
-            $this->loadConfig();
+
+        $reflection = new \ReflectionClass($this);
+        if (!empty($reflection->getAttributes(WithConfig::class))) {
+            Configuration::getInstance()->load();
         }
+
         $this->processArgs($args);
         $this->validateOptions();
     }
@@ -53,7 +57,7 @@ abstract class Command {
         }
     }
 
-    //TODO: Flags are valid but too many or incompatible
+    //TODO: Handle: Flags are valid but too many or incompatible
     private function validateOptions(): void {
         if (static::$_options) {
             $invalidOptions = self::validate($this->options, static::$_options);

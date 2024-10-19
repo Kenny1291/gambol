@@ -5,10 +5,19 @@ declare (strict_types=1);
 namespace Gambol;
 
 const CONFIG_FILE_PATH = 'gambol.json';
+
 const CONFIG_KEYS = [
     "serviceName" => "serviceName",
     "imageName" => "imageName",
-    "server" => "server",
+    "ssh" => [
+        "key" => "ssh",
+        "children" => [
+            "server" => "server",
+            "username" => "username",
+            "privateKeyPath" => "privateKeyPath",
+            "privateKeyPassword" => "privateKeyPassword"
+        ]
+    ],
     "tls" => [
         "key" => "tls",
         "children" => [
@@ -24,4 +33,9 @@ const CONFIG_KEYS = [
             "password" => "password"
         ]
     ]
+];
+
+const GAMBOL_SECRETS = [
+    "GAMBOL_SECRET_PRIVATE_KEY_PASSWORD" => "GAMBOL_SECRET_PRIVATE_KEY_PASSWORD",
+    "GAMBOL_SECRET_REGISTRY_PASSWORD" => "GAMBOL_SECRET_REGISTRY_PASSWORD"
 ];

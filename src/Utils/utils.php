@@ -12,3 +12,7 @@ function anyInArray(array $needles, array $haystack): bool {
     }
     return false;
 }
+
+function isPhpBuiltForWindows(): bool {
+    return stripos(PHP_OS, "WIN") === 0;
+}

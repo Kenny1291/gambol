@@ -1,1 +1,3 @@
 docker-compose.yml export-ignore
+.example.dev export-ignore
+gambol.example.json export-ignore

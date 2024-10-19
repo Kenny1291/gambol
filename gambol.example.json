@@ -1,0 +1,19 @@
+{
+    "serviceName": "myApp",
+    "imageName": "myUser/myApp",
+    "ssh": {
+        "server": "domain.example",
+        "username": "root",
+        "privateKeyPath": "/home/user/.ssh/id_rsa",
+        "privateKeyPassword": "GAMBOL_SECRET_PRIVATE_KEY_PASSWORD"
+    },
+    "tls": {
+        "enable": "true",
+        "host": "app.example"
+    },
+    "dockerRegistry": {
+        "server": "hub.docker.com",
+        "username": "myUsername",
+        "password": "GAMBOL_SECRET_REGISTRY_PASSWORD"
+    }
+}
