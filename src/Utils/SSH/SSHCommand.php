@@ -4,6 +4,8 @@ declare (strict_types=1);
 
 namespace Gambol\Utils\SSH;
 
+use Gambol\Commands\ExitStatus;
+
 final class SSHCommand {
     private string $stdout;
     private string $stderr;
@@ -17,8 +19,18 @@ final class SSHCommand {
         //TODO: handle errors
         $ssh = SSHConnection::getInstance()->ssh;
         $ssh->enableQuietMode();
-        $this->stdout = $ssh->exec($command);
-        $this->exitCode = $ssh->getExitStatus();
+        $execOutput = $ssh->exec($command);
+        if (!is_string($execOutput)) {
+            //TODO: Exit or throw
+            exit(ExitStatus::FAILURE->value);
+        }
+        $this->stdout = $execOutput;
+        $exitStatusOutput = $ssh->getExitStatus();
+        if (!is_int($exitStatusOutput)) {
+            //TODO: Exit or throw
+            exit(ExitStatus::FAILURE->value);
+        }
+        $this->exitCode = $exitStatusOutput;
         $this->stderr = $ssh->getStdError();
         $ssh->disableQuietMode();
     }

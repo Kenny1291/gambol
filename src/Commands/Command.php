@@ -13,13 +13,18 @@ abstract class Command {
     protected static string $description;
     protected static ?string $_argument = null;
     protected static ?string $argument_description = null;
-    protected static ?array $_options = null;
+    /** @var array<int, string> */
+    protected static array $_options = [];
     protected ?string $argument = null;
-    protected ?array $options = null;
+    /** @var array<int, string>  */
+    protected array $options = [];
 
+    /**
+     * @param array<int, string> $args
+     */
     public function __construct(array $args) {
         if ($args && anyInArray(["--help", "-h", "help"], $args)) {
-            fwrite(STDERR, static::getHelpMessage());
+            fwrite(STDERR, self::getHelpMessage());
             exit(ExitStatus::FAILURE->value);
         }
 
@@ -32,10 +37,13 @@ abstract class Command {
         $this->validateOptions();
     }
 
+    /**
+     * @param array<int, string> $args
+     */
     private function processArgs(array $args): void {
         foreach ($args as $arg) {
             if (str_starts_with($arg, '-')) {
-                if (!static::$_options) {
+                if (empty(static::$_options)) {
                     echo "'gambol " . static::$name . "' does not support flags. See 'gambol " . static::$name . " --help'";
                     exit(ExitStatus::FAILURE->value);
                 }
@@ -59,7 +67,7 @@ abstract class Command {
 
     //TODO: Handle: Flags are valid but too many or incompatible
     private function validateOptions(): void {
-        if (static::$_options) {
+        if (!empty(static::$_options)) {
             $invalidOptions = self::validate($this->options, static::$_options);
             if ($invalidOptions) {
                 $message = "The flag";
@@ -67,7 +75,7 @@ abstract class Command {
                 if ($invalidOptionsLength > 1) {
                     $message .= 's: ';
                     foreach ($invalidOptions as $i => $invalidArgumentOrOption) {
-                        $message .= $invalidArgumentOrOption . $invalidOptionsLength - 1 === $i ? '' : ', ';
+                        $message .= $invalidArgumentOrOption . ($invalidOptionsLength - 1 === $i ? '' : ', ');
                     }
                     $message .= " are ";
                 } else {
@@ -81,6 +89,11 @@ abstract class Command {
         }
     }
 
+    /**
+     * @param array<int|string, string> $toValidate
+     * @param array<int|string, string> $reference
+     * @return array<int|string, string>
+     */
     private static function validate(array $toValidate, array $reference): array {
         $invalidElements = [];
         foreach ($toValidate as $element) {
@@ -97,7 +110,7 @@ abstract class Command {
         if (static::$_argument) {
             $message .= "\nARGUMENT\n   " . static::$_argument . ":  " . static::$argument_description;
         }
-        if (static::$_options) {
+        if (!empty(static::$_options)) {
             $message .= "\n\nFLAGS\n";
             foreach (static::$_options as $option => $description) {
                 $message .= "  $option:  $description";

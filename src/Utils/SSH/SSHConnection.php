@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace Gambol\Utils\SSH;
 
+use Gambol\Commands\ExitStatus;
 use Gambol\Utils\Configuration\Configuration;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SSH2;
@@ -19,13 +20,18 @@ final class SSHConnection {
         $privateKeyPath = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["privateKeyPath"]];
         $server = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["server"]];
         $username = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["username"]];
+        $privateKey = file_get_contents($privateKeyPath);
+        if (!$privateKey) {
+            //TODO: Exit or throw
+            exit(ExitStatus::FAILURE->value);
+        }
         if ($privateKeyPassword) {
-            $key = PublicKeyLoader::load(file_get_contents($privateKeyPath), $privateKeyPassword);
+            $key = PublicKeyLoader::load($privateKey, $privateKeyPassword);
         } else {
-            $key = PublicKeyLoader::load(file_get_contents($privateKeyPath));
+            $key = PublicKeyLoader::load($privateKey);
         }
         $this->ssh = new SSH2($server);
-        if (!$this->ssh->login($username, $key)) {
+        if (!$this->ssh->login($username, $key)) { //@phpstan-ignore argument.type
             //TODO: create exception
         }
     }

@@ -4,6 +4,8 @@ declare (strict_types=1);
 
 namespace Gambol\Utils;
 
+use Gambol\Commands\ExitStatus;
+
 final class SystemCommand {
     private const array DESCRIPTOR_SPEC = [
         0 => ["pipe", "r"],
@@ -18,11 +20,10 @@ final class SystemCommand {
     public function __construct(string $command) {
         $process = proc_open($command, self::DESCRIPTOR_SPEC, $pipes);
         if (is_resource($process)) {
-            //TODO: throw exceptions on failure
             fclose($pipes[0]);
-            $this->stdout = stream_get_contents($pipes[1]);
+            $this->stdout = stream_get_contents($pipes[1]) ?: null;
             fclose($pipes[1]);
-            $this->stderr = stream_get_contents($pipes[2]);
+            $this->stderr = stream_get_contents($pipes[2]) ?: null;
             fclose($pipes[2]);
             $this->exitCode = proc_close($process);
         }
@@ -30,18 +31,25 @@ final class SystemCommand {
 
     public function getExitCode(): int {
         if (is_null($this->exitCode)) {
-            //throw illegalstate exception
+            //TODO: Exit or throw. It should not be possible to be null at this point.
+            exit(ExitStatus::FAILURE->value);
         }
         return $this->exitCode;
     }
 
     public function getOut(): string {
-        //TODO: handle errors
+        if (is_null($this->stdout)) {
+            //TODO: Exit or throw
+            exit(ExitStatus::FAILURE->value);
+        }
         return $this->stdout;
     }
 
     public function getErr(): string {
-        //TODO: handle errors
+        if (is_null($this->stderr)) {
+            //TODO: Exit or throw
+            exit(ExitStatus::FAILURE->value);
+        }
         return $this->stderr;
     }
  }

@@ -23,5 +23,8 @@
         "php": ">=8.3",
         "composer-runtime-api": "^2.2",
         "phpseclib/phpseclib": "~3.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.12"
     }
 }

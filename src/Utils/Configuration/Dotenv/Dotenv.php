@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace Gambol\Utils\Configuration\Dotenv;
 
+use Gambol\Commands\ExitStatus;
 use const Gambol\GAMBOL_SECRETS;
 
 final class Dotenv {
@@ -13,6 +14,10 @@ final class Dotenv {
 
     private function __construct() {
         $dotenvFile = file_get_contents(__DIR__.'/../../../../.example.env');
+        if (!$dotenvFile) {
+            //TODO: echo
+            exit(ExitStatus::FAILURE->value);
+        }
         $this->parse($dotenvFile);
     }
 
@@ -20,10 +25,11 @@ final class Dotenv {
         $secretNames = array_values(GAMBOL_SECRETS);
         $lines = explode(PHP_EOL, $dotenvFile);
         foreach ($lines as $line) {
-            [$key, $value] = explode("=", $line);
-            if (!isset($key) || !isset($value)) {
+            $pair = explode("=", $line);
+            if (count($pair) !== 2) {
                 continue;
             }
+            [$key, $value] = $pair;
             if (array_key_exists($key, $secretNames)) {
                 $parsedValue = self::parseValue($value);
                 $field = self::fromGambolSecretToField($key);

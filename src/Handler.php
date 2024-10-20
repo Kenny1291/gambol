@@ -12,6 +12,7 @@ use Gambol\Commands\SecureCommand\SecureCommand;
 use Gambol\Commands\VersionCommand\VersionCommand;
 
 final class Handler {
+    /** @var array<string, string>  */
     private static array $commands;
 
     private static function init(): void {
@@ -27,6 +28,9 @@ final class Handler {
         ];
     }
 
+    /**
+     * @param array<int, string> $argv
+     */
     public static function run(array $argv): void {
         self::init();
 

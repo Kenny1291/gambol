@@ -12,6 +12,6 @@ final class InstallCommand extends Command {
     protected static string $description = 'Install gambol on the server';
     #[\Override]
     protected function execute(): ExitStatus {
-        
+        return ExitStatus::SUCCESS;
     }
 }
