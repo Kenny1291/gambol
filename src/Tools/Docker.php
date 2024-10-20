@@ -23,7 +23,7 @@ final class Docker {
             }
         } else {
             $sshCmd = new SSHCommand($command);
-            if (!empty($sshCmd->getErr())) {
+            if (!is_null($sshCmd->getErr())) {
                 $isInstalled = true;
             }
         }

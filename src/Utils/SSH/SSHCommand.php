@@ -7,8 +7,8 @@ namespace Gambol\Utils\SSH;
 use Gambol\Commands\ExitStatus;
 
 final class SSHCommand {
-    private string $stdout;
-    private string $stderr;
+    private ?string $stdout = null;
+    private ?string $stderr = null;
     private int $exitCode;
 
     public function __construct(string $command) {
@@ -35,12 +35,12 @@ final class SSHCommand {
         $ssh->disableQuietMode();
     }
 
-    public function getOut(): string {
+    public function getOut(): string|null {
         //TODO: handle errors
         return $this->stdout;
     }
 
-    public function getErr(): string {
+    public function getErr(): string|null {
         //TODO: handle errors
         return $this->stderr;
     }

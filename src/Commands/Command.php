@@ -23,13 +23,13 @@ abstract class Command {
      * @param array<int, string> $args
      */
     public function __construct(array $args) {
-        if ($args && anyInArray(["--help", "-h", "help"], $args)) {
+        if (anyInArray(["--help", "-h", "help"], $args)) {
             fwrite(STDERR, self::getHelpMessage());
             exit(ExitStatus::FAILURE->value);
         }
 
         $reflection = new \ReflectionClass($this);
-        if (!empty($reflection->getAttributes(WithConfig::class))) {
+        if (count($reflection->getAttributes(WithConfig::class)) === 1) {
             Configuration::getInstance()->load();
         }
 
@@ -43,14 +43,14 @@ abstract class Command {
     private function processArgs(array $args): void {
         foreach ($args as $arg) {
             if (str_starts_with($arg, '-')) {
-                if (empty(static::$_options)) {
+                if (count(static::$_options) === 0) {
                     echo "'gambol " . static::$name . "' does not support flags. See 'gambol " . static::$name . " --help'";
                     exit(ExitStatus::FAILURE->value);
                 }
                 $this->options[] = $arg;
             } else {
-                if (!$this->argument) {
-                    if (!static::$_argument) {
+                if (!is_null($this->argument)) {
+                    if (is_null(static::$_argument)) {
                         echo "'gambol " . static::$name . "' does not support argument. See 'gambol " . static::$name . " --help'";
                         exit(ExitStatus::FAILURE->value);
                     }
@@ -67,9 +67,9 @@ abstract class Command {
 
     //TODO: Handle: Flags are valid but too many or incompatible
     private function validateOptions(): void {
-        if (!empty(static::$_options)) {
+        if (count(static::$_options) > 0) {
             $invalidOptions = self::validate($this->options, static::$_options);
-            if ($invalidOptions) {
+            if (count($invalidOptions) > 0) {
                 $message = "The flag";
                 $invalidOptionsLength = count($invalidOptions);
                 if ($invalidOptionsLength > 1) {
@@ -97,7 +97,7 @@ abstract class Command {
     private static function validate(array $toValidate, array $reference): array {
         $invalidElements = [];
         foreach ($toValidate as $element) {
-            if (!in_array($element, $reference)) {
+            if (!in_array($element, $reference, true)) {
                 $invalidElements[] = $element;
             }
         }
@@ -107,10 +107,10 @@ abstract class Command {
     private static function getHelpMessage(): string {
         $message = static::$description . "\n\n";
         $message .= "USAGE\n  gambol " . static::$name;
-        if (static::$_argument) {
+        if (!is_null(static::$_argument)) {
             $message .= "\nARGUMENT\n   " . static::$_argument . ":  " . static::$argument_description;
         }
-        if (!empty(static::$_options)) {
+        if (count(static::$_options) > 0) {
             $message .= "\n\nFLAGS\n";
             foreach (static::$_options as $option => $description) {
                 $message .= "  $option:  $description";

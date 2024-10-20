@@ -21,9 +21,11 @@ final class SystemCommand {
         $process = proc_open($command, self::DESCRIPTOR_SPEC, $pipes);
         if (is_resource($process)) {
             fclose($pipes[0]);
-            $this->stdout = stream_get_contents($pipes[1]) ?: null;
+            $stdOutOutput = stream_get_contents($pipes[1]);
+            $this->stdout = $stdOutOutput !== false ? $stdOutOutput : null;
             fclose($pipes[1]);
-            $this->stderr = stream_get_contents($pipes[2]) ?: null;
+            $stdErrOutput = stream_get_contents($pipes[2]);
+            $this->stderr = $stdErrOutput !== false ? $stdErrOutput : null;
             fclose($pipes[2]);
             $this->exitCode = proc_close($process);
         }

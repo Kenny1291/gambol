@@ -23,7 +23,7 @@ final class Configuration {
 
 	public function load(): void {
 		$gambolJson = file_get_contents(CONFIG_FILE_PATH);
-        if (!$gambolJson) {
+        if (!is_string($gambolJson)) {
             //TODO: print something
             exit(ExitStatus::FAILURE->value);
         }

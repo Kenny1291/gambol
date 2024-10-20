@@ -16,22 +16,28 @@ final class SSHConnection {
 
     private function __construct() {
         $configuration = Configuration::getInstance();
-        $privateKeyPassword = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["privateKeyPassword"]];
-        $privateKeyPath = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["privateKeyPath"]];
-        $server = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["server"]];
-        $username = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["username"]];
-        $privateKey = file_get_contents($privateKeyPath);
-        if (!$privateKey) {
-            //TODO: Exit or throw
-            exit(ExitStatus::FAILURE->value);
+        //TODO: handle NECESSARY missing config values
+        $privateKeyPassword = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["privateKeyPassword"]] ?? false;
+        $privateKeyPath = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["privateKeyPath"]] ?? false;
+        $server = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["server"]] ?? false;
+        $username = $configuration->ssh[CONFIG_KEYS["ssh"]["children"]["username"]] ?? false;
+        $privateKey = "";
+        if ($privateKeyPath !== false) {
+            $privateKey = file_get_contents($privateKeyPath);
+            if (!is_string($privateKey)) {
+                //TODO: Exit or throw
+                exit(ExitStatus::FAILURE->value);
+            }
         }
-        if ($privateKeyPassword) {
+        if ($privateKeyPassword !== false) {
             $key = PublicKeyLoader::load($privateKey, $privateKeyPassword);
         } else {
             $key = PublicKeyLoader::load($privateKey);
         }
         $this->ssh = new SSH2($server);
-        if (!$this->ssh->login($username, $key)) { //@phpstan-ignore argument.type
+        //TODO: check this error
+        // @phpstan-ignore-next-line
+        if (!$this->ssh->login($username, $key)) {
             //TODO: create exception
         }
     }

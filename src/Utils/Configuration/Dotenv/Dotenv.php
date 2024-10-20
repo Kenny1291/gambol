@@ -14,7 +14,7 @@ final class Dotenv {
 
     private function __construct() {
         $dotenvFile = file_get_contents(__DIR__.'/../../../../.example.env');
-        if (!$dotenvFile) {
+        if (!is_string($dotenvFile)) {
             //TODO: echo
             exit(ExitStatus::FAILURE->value);
         }
@@ -51,11 +51,11 @@ final class Dotenv {
 
     private static function parseValue(string $value): string {
         $parsedValue = "";
-        if (!empty($value) && $value[0] === "=") {
+        if (strlen($value) > 0 && $value[0] === "=") {
             $parsedValue = substr_replace($value, "", 0, 1);
         }
         $lastIndex = strlen($value) - 1;
-        if (!empty($parsedValue) && $parsedValue[$lastIndex] === "=") {
+        if (strlen($parsedValue) > 0 && $parsedValue[$lastIndex] === "=") {
             $parsedValue = substr_replace($parsedValue, "", $lastIndex, 1);
         }
         return $parsedValue;

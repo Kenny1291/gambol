@@ -2,3 +2,8 @@ parameters:
 	level: max
 	paths:
 		- src
+	strictRules:
+	    requireParentConstructorCall: false
+	    noVariableVariables: false
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
