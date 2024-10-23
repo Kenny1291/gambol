@@ -7,7 +7,7 @@
         },
         "files": [
             "src/constants.php",
-          "src/Utils/utils.php"
+            "src/Utils/utils.php"
         ]
     },
     "authors": [
