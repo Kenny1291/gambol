@@ -9,7 +9,7 @@ final class HelpCommand extends Command {
     protected static string $name = 'help';
     protected static string $description = 'Show help';
 
-    public function __construct() {} //If help is the subcommand we do not parse $args
+    public function __construct() {} //If help is the subcommand we do not parse $args.
 
     #[\Override]
     protected function execute(): ExitStatus {
