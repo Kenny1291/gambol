@@ -61,9 +61,9 @@ final class Dotenv {
         return $parsedValue;
     }
 
-    public static function getInstance(): Dotenv {
+    public static function getInstance(): self {
         if (is_null(self::$instance)) {
-            self::$instance = new Dotenv();
+            self::$instance = new self();
         }
         return self::$instance;
     }

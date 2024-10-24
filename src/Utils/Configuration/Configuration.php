@@ -94,9 +94,9 @@ final class Configuration {
 		return Dotenv::getInstance()->{$field};
 	}
 
-	public static function getInstance(): Configuration {
+	public static function getInstance(): self {
 		if (is_null(self::$instance)) {
-			self::$instance = new Configuration();
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}

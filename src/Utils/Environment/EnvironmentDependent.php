@@ -8,7 +8,7 @@ trait EnvironmentDependent {
             if (!isset($callerInfo['class'])) {
                 throw new \RuntimeException(); //TODO: maybe, idk
             }
-            return ($callerInfo['class'] === 'Gambol\Utils\Environment\Environment' && $callerInfo['function'] === 'local');
+            return $callerInfo['class'] === 'Gambol\Utils\Environment\Environment' && $callerInfo['function'] === 'local';
         }
 
         private static function isRemoteEnv(): bool {
@@ -16,6 +16,6 @@ trait EnvironmentDependent {
             if (!isset($callerInfo['class'])) {
                 throw new \RuntimeException(); //TODO: maybe, idk
             }
-            return ($callerInfo['class'] === 'Gambol\Utils\Environment\Environment' && $callerInfo['function'] === 'remote');
+            return $callerInfo['class'] === 'Gambol\Utils\Environment\Environment' && $callerInfo['function'] === 'remote';
         }
 }

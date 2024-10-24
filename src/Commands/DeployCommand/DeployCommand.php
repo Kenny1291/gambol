@@ -17,7 +17,7 @@ final class DeployCommand extends Command {
 
     #[\Override]
     protected function execute(): ExitStatus {
-        Environment::local(function () {
+        Environment::local(static function () {
             $dockerInstalled = Docker::isInstalled();
             if ($dockerInstalled) {
                 echo "yes";

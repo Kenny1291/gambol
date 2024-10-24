@@ -42,9 +42,9 @@ final class SSHConnection {
         }
     }
 
-    public static function getInstance(): SSHConnection {
+    public static function getInstance(): self {
         if (is_null(self::$instance)) {
-            self::$instance = new SSHConnection();
+            self::$instance = new self();
         }
         return self::$instance;
     }
