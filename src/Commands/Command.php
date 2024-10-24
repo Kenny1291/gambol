@@ -4,9 +4,9 @@ declare (strict_types=1);
 
 namespace Gambol\Commands;
 
-use Gambol\Utils\Configuration\Configuration;
-use Gambol\Utils\Configuration\WithConfig;
 use function Gambol\anyInArray;
+use Gambol\Utils\Configuration\WithConfig;
+use Gambol\Utils\Configuration\Configuration;
 
 abstract class Command {
     protected static string $name;

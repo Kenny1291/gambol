@@ -5,10 +5,9 @@ declare (strict_types=1);
 namespace Gambol\Utils\Configuration;
 
 use Gambol\Commands\ExitStatus;
-use Gambol\Utils\Configuration\Dotenv\Dotenv;
-use const Gambol\CONFIG_FILE_PATH;
-use const Gambol\CONFIG_KEYS;
 use const Gambol\GAMBOL_SECRETS;
+use const Gambol\CONFIG_FILE_PATH;
+use Gambol\Utils\Configuration\Dotenv\Dotenv;
 
 final class Configuration {
 	private static ?Configuration $instance = null;

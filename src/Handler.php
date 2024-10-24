@@ -4,10 +4,10 @@ declare (strict_types=1);
 
 namespace Gambol;
 
-use Gambol\Commands\DeployCommand\DeployCommand;
 use Gambol\Commands\ExitStatus;
 use Gambol\Commands\HelpCommand\HelpCommand;
 use Gambol\Commands\InitCommand\InitCommand;
+use Gambol\Commands\DeployCommand\DeployCommand;
 use Gambol\Commands\SecureCommand\SecureCommand;
 use Gambol\Commands\VersionCommand\VersionCommand;
 

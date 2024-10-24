@@ -4,9 +4,9 @@ declare (strict_types=1);
 
 namespace Gambol\Tools;
 
-use Gambol\Utils\Environment\EnvironmentDependent;
-use Gambol\Utils\SSH\SSHCommand;
 use Gambol\Utils\SystemCommand;
+use Gambol\Utils\SSH\SSHCommand;
+use Gambol\Utils\Environment\EnvironmentDependent;
 
 final class Docker {
     use EnvironmentDependent;

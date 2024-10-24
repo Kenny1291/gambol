@@ -4,11 +4,11 @@ declare (strict_types=1);
 
 namespace Gambol\Utils\SSH;
 
-use Gambol\Commands\ExitStatus;
-use Gambol\Utils\Configuration\Configuration;
-use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SSH2;
 use const Gambol\CONFIG_KEYS;
+use Gambol\Commands\ExitStatus;
+use phpseclib3\Crypt\PublicKeyLoader;
+use Gambol\Utils\Configuration\Configuration;
 
 final class SSHConnection {
     private static ?SSHConnection $instance = null;

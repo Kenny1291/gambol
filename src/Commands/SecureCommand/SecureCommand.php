@@ -6,8 +6,8 @@ namespace Gambol\Commands\SecureCommand;
 
 use Gambol\Commands\Command;
 use Gambol\Commands\ExitStatus;
-use Gambol\Utils\Configuration\WithConfig;
 use Gambol\Utils\SSH\SSHCommand;
+use Gambol\Utils\Configuration\WithConfig;
 
 #[WithConfig]
 final class SecureCommand extends Command {

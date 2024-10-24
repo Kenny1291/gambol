@@ -5,10 +5,10 @@ declare (strict_types=1);
 namespace Gambol\Commands\InitCommand;
 
 use Gambol\Commands\Command;
-use Gambol\Commands\ExitStatus;
-use function Gambol\isPhpBuiltForWindows;
-use const Gambol\CONFIG_FILE_PATH;
 use const Gambol\CONFIG_KEYS;
+use Gambol\Commands\ExitStatus;
+use const Gambol\CONFIG_FILE_PATH;
+use function Gambol\isPhpBuiltForWindows;
 
 final class InitCommand extends Command {
     protected static string $name = 'init';

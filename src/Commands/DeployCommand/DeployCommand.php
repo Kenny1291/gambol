@@ -4,11 +4,11 @@ declare (strict_types=1);
 
 namespace Gambol\Commands\DeployCommand;
 
+use Gambol\Tools\Docker;
 use Gambol\Commands\Command;
 use Gambol\Commands\ExitStatus;
-use Gambol\Tools\Docker;
-use Gambol\Utils\Configuration\WithConfig;
 use Gambol\Utils\Environment\Environment;
+use Gambol\Utils\Configuration\WithConfig;
 
 #[WithConfig]
 final class DeployCommand extends Command {
