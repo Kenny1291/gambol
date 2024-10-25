@@ -88,8 +88,8 @@ return (new PhpCsFixer\Config())
         ],
         'no_leading_import_slash' => true,
         'no_unneeded_import_alias' => true,
-        'no_unused_imports' => true,
-//        'ordered_imports' => [
+//        'no_unused_imports' => true,
+        'ordered_imports' => [
             'sort_algorithm' => 'length'
         ],
         'single_import_per_statement' => true,
