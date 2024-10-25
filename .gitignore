@@ -1,5 +1,4 @@
 .idea
 /vendor/
 bin/gambol.json
-.php-cs-fixer.dist.php
 .php-cs-fixer.cache
