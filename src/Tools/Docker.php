@@ -14,7 +14,7 @@ final class Docker {
     private const string BASE_COMMAND = 'docker ';
 
     public static function isInstalled(): bool {
-        $command = self::BASE_COMMAND.'-v';
+        $command = self::BASE_COMMAND . '-v';
         $isInstalled = false;
         if (self::isLocalEnv()) {
             $systemCmd = new SystemCommand($command);
@@ -31,6 +31,6 @@ final class Docker {
     }
 
     public static function build(): void {
-        $command = self::BASE_COMMAND.'build';
+        $command = self::BASE_COMMAND . 'build';
     }
 }

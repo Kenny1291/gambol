@@ -13,7 +13,7 @@ final class Dotenv {
     public ?string $registryPassword = null;
 
     private function __construct() {
-        $dotenvFile = file_get_contents(__DIR__.'/../../../../.example.env');
+        $dotenvFile = file_get_contents(__DIR__ . '/../../../../.example.env');
         if (!is_string($dotenvFile)) {
             //TODO: echo
             exit(ExitStatus::FAILURE->value);

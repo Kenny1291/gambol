@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gambol\Utils\Environment;
 
 trait EnvironmentDependent {

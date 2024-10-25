@@ -19,7 +19,7 @@ final class SSHStream {
     }
 
     public function readLine(): \Generator {
-        while($line = $this->ssh->read()) {
+        while ($line = $this->ssh->read()) {
             yield $line;
         }
     }
