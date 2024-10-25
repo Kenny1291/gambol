@@ -16,7 +16,6 @@ final class SystemCommand {
     private ?string $stdout = null;
     private ?string $stderr = null;
 
-
     public function __construct(string $command) {
         $process = proc_open($command, self::DESCRIPTOR_SPEC, $pipes);
         if (is_resource($process)) {
