@@ -53,4 +53,4 @@ final class SystemCommand {
         }
         return $this->stderr;
     }
- }
+}
