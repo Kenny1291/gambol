@@ -79,7 +79,7 @@ abstract class Command {
                     }
                     $message .= " are ";
                 } else {
-                    $message .= ": $invalidOptions[0] is ";
+                    $message .= ": {$invalidOptions[0]} is ";
                 }
                 $message .= "not valid. See 'gambol " . static::$name . " --help'";
 
@@ -113,7 +113,7 @@ abstract class Command {
         if (count(static::$_options) > 0) {
             $message .= "\n\nFLAGS\n";
             foreach (static::$_options as $option => $description) {
-                $message .= "  $option:  $description";
+                $message .= "  {$option}:  {$description}";
             }
         }
         return $message;
