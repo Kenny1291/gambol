@@ -1,10 +1,10 @@
-name: static-analysis
+name: style-fixer | static-analysis 
 on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  static-analysis:
+  static-analysis-and-style-fixer:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -20,5 +20,7 @@ jobs:
         sudo mv composer.phar /usr/local/bin/composer
     - name: Install dependencies
       run: composer install --no-progress
+    - name: Run PHP-CS-Fixer
+      run: vendor/bin/php-cs-fixer check src -vv 
     - name: Run PHPStan
       run: vendor/bin/phpstan analyse
