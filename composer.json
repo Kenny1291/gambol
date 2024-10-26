@@ -28,5 +28,10 @@
         "phpstan/phpstan": "^1.12",
         "phpstan/phpstan-strict-rules": "^1.6",
         "friendsofphp/php-cs-fixer": "^3.64"
+    },
+    "scripts": {
+        "lint": "vendor/bin/php-cs-fixer fix -vv",
+        "stan": "vendor/bin/phpstan analyse",
+        "dev": ["@lint", "@stan"]
     }
 }
