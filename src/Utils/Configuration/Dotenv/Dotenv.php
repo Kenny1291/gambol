@@ -4,11 +4,13 @@ declare (strict_types=1);
 
 namespace Gambol\Utils\Configuration\Dotenv;
 
+use Gambol\Traits\Singleton;
 use Gambol\Commands\ExitStatus;
 use const Gambol\GAMBOL_SECRETS;
 
 final class Dotenv {
-    private static ?Dotenv $instance = null;
+    use Singleton;
+
     public ?string $privateKeyPassword = null;
     public ?string $registryPassword = null;
 
@@ -59,12 +61,5 @@ final class Dotenv {
             $parsedValue = substr_replace($parsedValue, "", $lastIndex, 1);
         }
         return $parsedValue;
-    }
-
-    public static function getInstance(): self {
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
-        return self::$instance;
     }
 }

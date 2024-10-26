@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace Gambol\Utils\Configuration;
 
+use Gambol\Traits\Singleton;
 use const Gambol\CONFIG_KEYS;
 use Gambol\Commands\ExitStatus;
 use const Gambol\GAMBOL_SECRETS;
@@ -11,7 +12,8 @@ use const Gambol\CONFIG_FILE_PATH;
 use Gambol\Utils\Configuration\Dotenv\Dotenv;
 
 final class Configuration {
-    private static ?Configuration $instance = null;
+    use Singleton;
+
     public ?string $serviceName = null;
     public ?string $imageName = null;
     /** @var array<string, string> */
@@ -92,12 +94,5 @@ final class Configuration {
     private function fetchSecret(string $value): string|null {
         $field = Dotenv::fromGambolSecretToField($value);
         return Dotenv::getInstance()->{$field};
-    }
-
-    public static function getInstance(): self {
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
-        return self::$instance;
     }
 }

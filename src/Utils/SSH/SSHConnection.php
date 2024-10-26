@@ -5,13 +5,15 @@ declare (strict_types=1);
 namespace Gambol\Utils\SSH;
 
 use phpseclib3\Net\SSH2;
+use Gambol\Traits\Singleton;
 use const Gambol\CONFIG_KEYS;
 use Gambol\Commands\ExitStatus;
 use phpseclib3\Crypt\PublicKeyLoader;
 use Gambol\Utils\Configuration\Configuration;
 
 final class SSHConnection {
-    private static ?SSHConnection $instance = null;
+    use Singleton;
+
     public SSH2 $ssh;
 
     private function __construct() {
@@ -40,12 +42,5 @@ final class SSHConnection {
         if (!$this->ssh->login($username, $key)) {
             //TODO: create exception
         }
-    }
-
-    public static function getInstance(): self {
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
-        return self::$instance;
     }
 }
