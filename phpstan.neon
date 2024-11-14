@@ -2,6 +2,8 @@ parameters:
 	level: max
 	paths:
 	    - src
+	stubFiles:
+	    - stubs/SSH2.stub
 	strictRules:
 	    requireParentConstructorCall: false
 	    noVariableVariables: false

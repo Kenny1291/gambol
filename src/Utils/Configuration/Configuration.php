@@ -67,6 +67,7 @@ final class Configuration {
                     foreach ($configValue["children"] as $childKey => $childValue) {
                         if ($secondLevelKey === $childValue) {
                             $this->replaceIfSecret($secondLevelValue);
+                            // @phpstan-ignore offsetAccess.nonOffsetAccessible, assign.propertyType
                             $this->{$firstLevelKey}[$secondLevelKey] = $secondLevelValue;
                             break;
                         }
@@ -78,7 +79,12 @@ final class Configuration {
 
     private function replaceIfSecret(string &$value): void {
         if ($this->isSecret($value)) {
-            $value = $this->fetchSecret($value);
+            $secret = $this->fetchSecret($value);
+            if ($secret === null) {
+                //TODO: Decide how to handle
+                return;
+            }
+            $value = $secret;
         }
     }
 
@@ -93,6 +99,6 @@ final class Configuration {
 
     private function fetchSecret(string $value): string|null {
         $field = Dotenv::fromGambolSecretToField($value);
-        return Dotenv::getInstance()->{$field};
+        return Dotenv::getInstance()->{$field}; //@phpstan-ignore return.type
     }
 }

@@ -19,13 +19,13 @@ final class SystemCommand {
     public function __construct(string $command) {
         $process = proc_open($command, self::DESCRIPTOR_SPEC, $pipes);
         if (is_resource($process)) {
-            fclose($pipes[0]);
-            $stdOutOutput = stream_get_contents($pipes[1]);
+            fclose($pipes[0]); // @phpstan-ignore offsetAccess.nonOffsetAccessible, argument.type
+            $stdOutOutput = stream_get_contents($pipes[1]); // @phpstan-ignore offsetAccess.nonOffsetAccessible, argument.type
             $this->stdout = $stdOutOutput !== false ? $stdOutOutput : null;
-            fclose($pipes[1]);
-            $stdErrOutput = stream_get_contents($pipes[2]);
+            fclose($pipes[1]); // @phpstan-ignore offsetAccess.nonOffsetAccessible, argument.type
+            $stdErrOutput = stream_get_contents($pipes[2]); // @phpstan-ignore offsetAccess.nonOffsetAccessible, argument.type
             $this->stderr = $stdErrOutput !== false ? $stdErrOutput : null;
-            fclose($pipes[2]);
+            fclose($pipes[2]); // @phpstan-ignore offsetAccess.nonOffsetAccessible, argument.type
             $this->exitCode = proc_close($process);
         }
     }
