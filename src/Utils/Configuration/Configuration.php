@@ -67,8 +67,7 @@ final class Configuration {
                     foreach ($configValue["children"] as $childKey => $childValue) {
                         if ($secondLevelKey === $childValue) {
                             $this->replaceIfSecret($secondLevelValue);
-                            // @phpstan-ignore offsetAccess.nonOffsetAccessible, assign.propertyType
-                            $this->{$firstLevelKey}[$secondLevelKey] = $secondLevelValue;
+                            $this->{$firstLevelKey}[$secondLevelKey] = $secondLevelValue; // @phpstan-ignore offsetAccess.nonOffsetAccessible, assign.propertyType, assign.propertyType, assign.propertyType
                             break;
                         }
                     }
